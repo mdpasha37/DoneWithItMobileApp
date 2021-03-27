@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TextInput, Switch } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Switch,
+  Button,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
 
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ViewImageScreen from "./app/screens/ViewImageScreen";
@@ -22,6 +33,9 @@ import ListingDetailsScreen from "./app/screens/ListingDetailsScreen";
 import ListingsScreen from "./app/screens/ListingsScreen";
 import AppPicker from "./app/components/AppPicker";
 import LoginScreen from "./app/screens/LoginScreen";
+import colors from "./app/config/colors";
+import ImageInput from "./app/components/ImageInput";
+import ImageInputList from "./app/components/ImageInputList";
 
 const categories = [
   {
@@ -38,17 +52,28 @@ const categories = [
   },
 ];
 export default function App() {
-  const requestPermission = async () => {
-    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!granted) alert("You need to enable permission to access the library.");
+  const [imageUris, setImageUris] = useState([]);
+
+  const handleAdd = (uri) => {
+    setImageUris([...imageUris, uri]);
   };
-  useEffect(() => {
-    requestPermission();
-  }, []);
-  console.log("Console React native app");
-  return <Screen></Screen>;
+
+  const handleRemove = (uri) => {
+    setImageUris(imageUris.filter((imageUri) => imageUri !== uri));
+  };
+
+  return (
+    <Screen>
+      <ImageInputList
+        imageUris={imageUris}
+        onAddImage={handleAdd}
+        onRemoveImage={handleRemove}
+      />
+    </Screen>
+  );
 }
 
+// <Button title="Select Image" onPress={selectImage} />
 const styles = StyleSheet.create({
   container: {
     flex: 1,
