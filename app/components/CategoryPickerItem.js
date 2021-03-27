@@ -4,7 +4,6 @@ import AppText from "./AppText";
 import Icon from "./Icon";
 
 const CategoryPickerItem = ({ item, onPress }) => {
-  console.log("@@@@@@", item);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress}>
