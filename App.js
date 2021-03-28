@@ -1,94 +1,130 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Switch,
-  Button,
-  Image,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+// In App.js in a new project
 
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
-
-import WelcomeScreen from "./app/screens/WelcomeScreen";
-import ViewImageScreen from "./app/screens/ViewImageScreen";
-import MessagesScreen from "./app/screens/MessagesScreen";
-import ListingEditScreen from "./app/screens/ListingEditScreen";
+import * as React from "react";
+import { View, Text, Button } from "react-native";
 import {
-  Shadows,
-  PaddingsAndMargins,
-  TextStyling,
-} from "./playground/Stylings";
-import AppButton from "./app/components/AppButton";
+  NavigationContainer,
+  StackActions,
+  useNavigation,
+} from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createBottomNavigator,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 import Screen from "./app/components/Screen";
-import AppTextInput from "./app/components/AppTextInput";
-import ListItem from "./app/components/ListItem";
-import Icon from "./app/components/Icon";
-import Card from "./app/components/Card";
-import ListingDetailsScreen from "./app/screens/ListingDetailsScreen";
-import ListingsScreen from "./app/screens/ListingsScreen";
-import AppPicker from "./app/components/AppPicker";
-import LoginScreen from "./app/screens/LoginScreen";
-import colors from "./app/config/colors";
-import ImageInput from "./app/components/ImageInput";
-import ImageInputList from "./app/components/ImageInputList";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import RegisterScreen from "./app/screens/RegisterScreen";
+import navigationTheme from "./app/navigation/navigationTheme";
+import AppNavigator from "./app/navigation/AppNavigator";
 
-const categories = [
-  {
-    label: "Furniture",
-    value: 1,
-  },
-  {
-    label: "Clothing",
-    value: 2,
-  },
-  {
-    label: "Cameras",
-    value: 3,
-  },
-];
-export default function App() {
+const Link = () => {
+  const navigation = useNavigation();
+  return (
+    <Button title="click" onPress={() => navigation.navigate("TweetDetails")} />
+  );
+};
+
+const FeedNavigator = ({ navigation }) => (
+  <Screen>
+    <Text>Tweets</Text>
+
+    <Button
+      title="View Tweet"
+      onPress={() => navigation.navigate("TweetDetails", { id: 1 })}
+    />
+  </Screen>
+);
+
+function TweetDetails({ route }) {
   return (
     <Screen>
-      <ListingEditScreen></ListingEditScreen>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text> Tweet Details Screen {route.params.id}</Text>
+      </View>
+    </Screen>
+  );
+}
+function AccountNavigator() {
+  return (
+    <Screen>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text> Account </Text>
+      </View>
     </Screen>
   );
 }
 
-// <Button title="Select Image" onPress={selectImage} />
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const Stack = createStackNavigator();
+const StacktNavigator = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: "dodgerblue" },
+      headerTintColor: "white",
+    }}
+  >
+    <Stack.Screen name="Tweets" component={Tweets} />
+    <Stack.Screen
+      name="TweetDetails"
+      component={TweetDetails}
+      options={{
+        headerStyle: { backgroundColor: "tomato" },
+        headerTintColor: "white",
+      }}
+      // options={({ route }) => ({
+      //   title: route.params.id,
+      // })}
+    />
+  </Stack.Navigator>
+);
 
-// <TextInput
-//         clearButtonMode="always"
-//         keyboardType="numeric"
-//         maxLength={10}
-//         onChangeText={(text) => setFirstName(text)}
-//         placeholder="First Name"
-//         style={{
-//           top: 20,
-//           width: "80%",
-//           borderBottomColor: "#ccc",
-//           borderBottomWidth: 1,
-//         }}
-//       ></TextInput>
-// <AppTextInput placeholder="Username" icon="email" />
-// <Switch value={isNew} onValueChange={(item) => setIsNew(item)} />
-// <AppPicker
-// selectedItem={category}
-// onSelectItem={(item) => setCategory(item)}
-// icon="apps"
-// placeholder="Category"
-// items={categories}
-// ></AppPicker>
-// <AppTextInput icon="email" placeholder="Email" />
+const Tab = createBottomTabNavigator();
+const TabNavigator = () => (
+  <Tab.Navigator
+    tabBarOptions={{
+      activeBackgroundColor: "tomato",
+      activeTintColor: "white",
+      inactiveBackgroundColor: "#eee",
+      inactiveTintColor: "#000",
+    }}
+  >
+    <Tab.Screen
+      name="Feed"
+      component={FeedNavigator}
+      options={{
+        tabBarIcon: ({ size, color }) => (
+          <MaterialCommunityIcons name="home" size={size} color={color} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="TweetDetails"
+      component={FeedNavigator}
+      options={{
+        tabBarIcon: ({ size, color }) => (
+          <Ionicons name="add-circle-sharp" size={size} color={color} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Account"
+      component={AccountNavigator}
+      options={{
+        tabBarIcon: ({ size, color }) => (
+          <MaterialCommunityIcons name="account" size={size} color={color} />
+        ),
+      }}
+    />
+  </Tab.Navigator>
+);
+
+function App() {
+  return (
+    <NavigationContainer theme={navigationTheme}>
+      <AppNavigator />
+    </NavigationContainer>
+  );
+}
+
+export default App;

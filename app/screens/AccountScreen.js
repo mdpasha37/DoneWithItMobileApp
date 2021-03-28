@@ -8,6 +8,7 @@ import Screen from "../components/Screen";
 import ListItem from "../components/ListItem";
 import Icon from "../components/Icon";
 import colors from "../config/colors";
+import navigationTheme from "../navigation/navigationTheme";
 
 const menuItems = [
   {
@@ -23,10 +24,11 @@ const menuItems = [
       name: "email",
       backgroundColor: colors.secondary,
     },
+    targetScreen: "Messages",
   },
 ];
 
-const AccountScreen = (props) => {
+const AccountScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -50,6 +52,7 @@ const AccountScreen = (props) => {
                   backgroundColor={item.icon.backgroundColor}
                 ></Icon>
               }
+              onPress={() => navigation.navigate(item.targetScreen)}
             ></ListItem>
           )}
         ></FlatList>
