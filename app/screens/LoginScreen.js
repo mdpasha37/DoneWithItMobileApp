@@ -25,7 +25,7 @@ const LoginScreen = (props) => {
       return setLoginFailed(true);
     }
     setLoginFailed(false);
-    console.log("Login Screen ---- login api data--", result.data);
+    // console.log("Login Screen ---- login api data--", result.data);
     logIn(result.data);
   };
   return (

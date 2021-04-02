@@ -1,14 +1,22 @@
 import React from "react";
-import { StyleSheet, Image, View } from "react-native";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  Image,
+} from "react-native";
 
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import ListItem from "../components/ListItem";
+import ContactSellerForm from "../components/ContactSellerForm";
 
 const ListingDetailsScreen = ({ route }) => {
   const listing = route.params;
   return (
-    <View>
+    <KeyboardAvoidingView behavior="position">
       <Image style={styles.image} source={{ uri: listing.images[0].url }} />
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>{listing.title}</AppText>
@@ -21,7 +29,8 @@ const ListingDetailsScreen = ({ route }) => {
           />
         </View>
       </View>
-    </View>
+      <ContactSellerForm listing={listing} />
+    </KeyboardAvoidingView>
   );
 };
 

@@ -20,6 +20,6 @@ export default useLocation = () => {
   useEffect(() => {
     getLocation();
   }, []);
-  console.log("########", location);
+  // console.log("########", location);
   return location;
 };

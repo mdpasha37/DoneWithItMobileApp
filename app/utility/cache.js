@@ -10,7 +10,7 @@ const store = async (key, value) => {
       value,
       timestamp: Date.now(),
     };
-    console.log("Pasha cache,js -----------------", key);
+    // console.log("Pasha cache,js -----------------", key);
     await AsyncStorage.setItem(prefix + key, JSON.stringify(item));
   } catch (error) {
     console.log("cache.js - set storage", error);
@@ -26,7 +26,6 @@ const isExpired = (item) => {
 const get = async (key) => {
   try {
     const value = AsyncStorage.getItem(prefix + key);
-    console.log("pasassss", value);
     const item = JSON.parse(value);
     if (!item) return null;
 
